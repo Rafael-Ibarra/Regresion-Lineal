@@ -31,38 +31,33 @@ def sumatoriaVectores(vector):
     return resultado
 
 def procesoRegresion(x, y, w, b, alfa, tolerancia, iteraciones):
+    n = len(x)
     for i in range(iteraciones):
         yh = vectorPorEscalar(x, w)
         yh = vectorMasEscalar(yh, b)
 
         error = vectorMenosVector(y, yh)
         sumatoria = sumatoriaVectores(error)
-        loss = (1/len(error)) * (sumatoria**2)
+        loss = (1/n) * (sumatoria**2)
     
         if(loss <= tolerancia):
-            print()
-            print("-=[ Ecuación Resultante ]=-")
-            print("{}x + {}".format(w, b))
-            print()
-            print("Se utilizaron {} iteraciones.".format(i+1))
-
             r = abs(1 - loss)
-            return r
+            return yh, r, w, b
         
         dw = vectorPorVector(error, x)
         dw = sumatoriaVectores(dw)
-        dw *= (-2/len(error))
+        dw *= (-2/n)
 
         db = sumatoriaVectores(error)
-        db *= (-2/len(error))
+        db *= (-2/n)
 
         w -= alfa * dw
         b -= alfa * db
 
 if __name__ == "__main__":
-    w = 0
-    b = 0
-    x = [-0.425602809, 1.534850182, 0.846241656, -0.036614543, 0.291758403, -0.651090081, 0.471038009, -1.252575438 ,1.147956484, -1.023822386]
-    y = [-38.23241509, 142.4837453, 79.00724804, -2.375158556, 27.89452823, -59.01801626, 44.42066896, -114.4634285, 106.8195677, -93.37678504]
+    w = random()
+    b = random()
+    x = [0.229603789, -1.069684487, 0.724914348, 0.037690034, -0.322328644, 0.233248992, -0.471233456, 1.68446954, 0.201323551, -0.579319582]
+    y = [16.90056009, -78.68020895, 53.33755804, 2.782627519, -23.70176609, 17.16871565, -34.65579128, 123.9262218, 14.82015431, -42.6070329]
 
-    print(procesoRegresion(x, y, w, b, 0.55, 1e-3, 1000))
+    print(procesoRegresion(x, y, w, b, 0.62, 1e-3, 1000))
